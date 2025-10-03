@@ -1,103 +1,202 @@
-import Image from "next/image";
+// app/page.tsx
+'use client'
 
-export default function Home() {
+import { useState } from 'react'
+import Image from 'next/image'
+
+const products = [
+  {
+    id: '1',
+    name: 'Premium Laptop Çantası',
+    code: 'LPT-001',
+    price: 1299.99,
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500',
+  },
+  {
+    id: '2',
+    name: 'Modern Ofis Koltuğu',
+    code: 'OFK-002',
+    price: 3499.99,
+    image: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?w=500',
+  },
+  {
+    id: '3',
+    name: 'Organik Pamuklu Havlu Seti',
+    code: 'HVL-003',
+    price: 449.99,
+    image: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=500',
+  },
+  {
+    id: '4',
+    name: 'Smart Buzdolabı',
+    code: 'BZD-004',
+    price: 15999.99,
+    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=500',
+  },
+  {
+    id: '5',
+    name: 'Wireless Mouse',
+    code: 'MSE-005',
+    price: 299.99,
+    image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500',
+  },
+  {
+    id: '6',
+    name: 'Ahşap Kitaplık',
+    code: 'KTP-006',
+    price: 2799.99,
+    image: 'https://images.unsplash.com/photo-1594620302200-9a762244a156?w=500',
+  },
+  {
+    id: '7',
+    name: 'Yün Halı',
+    code: 'HLI-007',
+    price: 1899.99,
+    image: 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=500',
+  },
+  {
+    id: '8',
+    name: 'Çamaşır Makinesi',
+    code: 'CMK-008',
+    price: 8999.99,
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500',
+  },
+  {
+    id: '9',
+    name: 'LED Masa Lambası',
+    code: 'LMB-009',
+    price: 599.99,
+    image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=500',
+  },
+  {
+    id: '10',
+    name: 'Bluetooth Hoparlör',
+    code: 'HPR-010',
+    price: 799.99,
+    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500',
+  },
+  {
+    id: '11',
+    name: 'Yoga Matı',
+    code: 'YGA-011',
+    price: 249.99,
+    image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500',
+  },
+  {
+    id: '12',
+    name: 'Kahve Makinesi',
+    code: 'KHV-012',
+    price: 1899.99,
+    image: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=500',
+  },
+]
+
+export default function HomePage() {
+  const [gridCols, setGridCols] = useState(4)
+
+  const gridClass = {
+    2: 'grid-cols-2',
+    4: 'grid-cols-2 md:grid-cols-4',
+    6: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-6',
+    8: 'grid-cols-2 md:grid-cols-4 lg:grid-cols-8',
+  }[gridCols]
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50 border-b">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-8">
+              <h1 className="text-2xl font-bold text-blue-600">E-KATALOG</h1>
+              <input
+                type="search"
+                placeholder="Ürün ara..."
+                className="hidden md:block w-96 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-600 hidden md:block">Görünüm:</span>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setGridCols(2)}
+                  className={`px-3 py-2 rounded-lg font-semibold transition ${
+                    gridCols === 2
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  2
+                </button>
+                <button
+                  onClick={() => setGridCols(4)}
+                  className={`px-3 py-2 rounded-lg font-semibold transition ${
+                    gridCols === 4
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  4
+                </button>
+                <button
+                  onClick={() => setGridCols(6)}
+                  className={`px-3 py-2 rounded-lg font-semibold transition ${
+                    gridCols === 6
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  6
+                </button>
+                <button
+                  onClick={() => setGridCols(8)}
+                  className={`px-3 py-2 rounded-lg font-semibold transition ${
+                    gridCols === 8
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+                >
+                  8
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Products Grid */}
+      <main className="container mx-auto px-4 py-8">
+        <div className={`grid ${gridClass} gap-4`}>
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="bg-white rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer overflow-hidden"
+            >
+              <div className="relative aspect-square">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-3">
+                <p className="text-xs text-gray-500 mb-1">{product.code}</p>
+                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                  {product.name}
+                </h3>
+                <p className="text-lg font-bold text-blue-600">
+                  {product.price.toLocaleString('tr-TR', {
+                    style: 'currency',
+                    currency: 'TRY',
+                  })}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
-  );
+  )
 }
