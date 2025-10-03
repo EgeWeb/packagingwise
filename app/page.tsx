@@ -249,7 +249,7 @@ export default function HomePage() {
                 ))}
               </div>
               <div className="hidden md:flex items-center gap-2">
-                {[2, 4, 6, 8].map(cols => (
+                {[2, 4, 6].map(cols => (
                   <button
                     key={cols}
                     onClick={() => setGridCols(cols)}
@@ -290,18 +290,32 @@ export default function HomePage() {
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
-              <div className={`p-5 ${gridCols === 2 ? 'space-y-4' : 'space-y-2'}`}>
-                <p className={`text-gray-400 font-mono ${gridCols === 2 ? 'text-sm' : 'text-xs'}`}>
+              <div className="p-5 space-y-2">
+                <p className={`text-gray-400 font-mono mb-1 ${gridCols === 2 ? 'text-xs' : 'text-xs'}`}>
                   {product.code}
                 </p>
-                <h3 className={`font-bold text-gray-900 leading-snug ${gridCols === 2 ? 'text-xl mb-3' : 'text-sm line-clamp-2 min-h-[40px] mb-2'}`}>
+                <h3 className={`font-bold text-gray-900 leading-snug mb-2 ${
+                  gridCols === 1 ? 'text-lg' : 
+                  gridCols === 2 ? 'text-sm md:text-xl' : 
+                  gridCols === 4 ? 'text-base' : 
+                  'text-sm line-clamp-2 min-h-[40px]'
+                }`}>
                   {product.name}
                 </h3>
-                <div className="flex flex-col gap-2">
-                  <p className={`font-bold text-green-600 ${gridCols === 2 ? 'text-3xl' : 'text-2xl'}`}>
+                <div className="space-y-1">
+                  <p className={`font-bold text-green-600 ${
+                    gridCols === 1 ? 'text-3xl' : 
+                    gridCols === 2 ? 'text-lg md:text-4xl' : 
+                    gridCols === 4 ? 'text-xl' : 
+                    'text-base'
+                  }`}>
                     ₺{product.price.toFixed(2)}
                   </p>
-                  <p className={`text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full inline-block w-fit ${gridCols === 2 ? 'text-sm' : 'text-xs'}`}>
+                  <p className={`text-gray-600 bg-gray-100 rounded-full inline-block ${
+                    gridCols === 2 ? 'text-[10px] px-2 py-0.5 md:text-xs md:px-2.5 md:py-1' : 
+                    gridCols >= 6 ? 'text-[10px] px-2 py-0.5' : 
+                    'text-xs px-2.5 py-1'
+                  }`}>
                     Min. {product.minOrder}
                   </p>
                 </div>
