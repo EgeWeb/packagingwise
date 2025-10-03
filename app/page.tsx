@@ -1,4 +1,3 @@
-// app/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -7,191 +6,305 @@ import Image from 'next/image'
 const products = [
   {
     id: '1',
-    name: 'Premium Laptop Çantası',
-    code: 'LPT-001',
-    price: 1299.99,
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500',
+    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
+    code: 'KB-16OZ-001',
+    price: 0.15,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
+    minOrder: '500 adet'
   },
   {
     id: '2',
-    name: 'Modern Ofis Koltuğu',
-    code: 'OFK-002',
-    price: 3499.99,
-    image: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?w=500',
+    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
+    code: 'KB-12OZ-002',
+    price: 0.12,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
+    minOrder: '500 adet'
   },
   {
     id: '3',
-    name: 'Organik Pamuklu Havlu Seti',
-    code: 'HVL-003',
-    price: 449.99,
-    image: 'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=500',
+    name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
+    code: 'KB-8OZ-003',
+    price: 0.08,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
+    minOrder: '1000 adet'
   },
   {
     id: '4',
-    name: 'Smart Buzdolabı',
-    code: 'BZD-004',
-    price: 15999.99,
-    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=500',
+    name: 'Bardak Taşıyıcı - 2li',
+    code: 'BT-2-004',
+    price: 0.25,
+    category: 'lid',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
+    minOrder: '360 adet'
   },
   {
     id: '5',
-    name: 'Wireless Mouse',
-    code: 'MSE-005',
-    price: 299.99,
-    image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500',
+    name: 'Bardak Kılıfı 12-16oz Kahverengi',
+    code: 'BK-1216-005',
+    price: 0.05,
+    category: 'lid',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
+    minOrder: '1000 adet'
   },
   {
     id: '6',
-    name: 'Ahşap Kitaplık',
-    code: 'KTP-006',
-    price: 2799.99,
-    image: 'https://images.unsplash.com/photo-1594620302200-9a762244a156?w=500',
+    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
+    code: 'KB-16OZ-006',
+    price: 0.15,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
+    minOrder: '500 adet'
   },
   {
     id: '7',
-    name: 'Yün Halı',
-    code: 'HLI-007',
-    price: 1899.99,
-    image: 'https://images.unsplash.com/photo-1600166898405-da9535204843?w=500',
+    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
+    code: 'KB-12OZ-007',
+    price: 0.12,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
+    minOrder: '500 adet'
   },
   {
     id: '8',
-    name: 'Çamaşır Makinesi',
-    code: 'CMK-008',
-    price: 8999.99,
-    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=500',
+    name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
+    code: 'KB-8OZ-008',
+    price: 0.08,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
+    minOrder: '1000 adet'
   },
   {
     id: '9',
-    name: 'LED Masa Lambası',
-    code: 'LMB-009',
-    price: 599.99,
-    image: 'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?w=500',
+    name: 'Bardak Taşıyıcı - 2li',
+    code: 'BT-2-009',
+    price: 0.25,
+    category: 'lid',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
+    minOrder: '360 adet'
   },
   {
     id: '10',
-    name: 'Bluetooth Hoparlör',
-    code: 'HPR-010',
-    price: 799.99,
-    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500',
+    name: 'Bardak Kılıfı 12-16oz Kahverengi',
+    code: 'BK-1216-010',
+    price: 0.05,
+    category: 'lid',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
+    minOrder: '1000 adet'
   },
   {
     id: '11',
-    name: 'Yoga Matı',
-    code: 'YGA-011',
-    price: 249.99,
-    image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500',
+    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
+    code: 'KB-16OZ-011',
+    price: 0.15,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
+    minOrder: '500 adet'
   },
   {
     id: '12',
-    name: 'Kahve Makinesi',
-    code: 'KHV-012',
-    price: 1899.99,
-    image: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=500',
+    name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
+    code: 'KB-8OZ-012',
+    price: 0.08,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
+    minOrder: '1000 adet'
+  },
+  {
+    id: '13',
+    name: 'Bardak Taşıyıcı - 2li',
+    code: 'BT-2-013',
+    price: 0.25,
+    category: 'lid',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
+    minOrder: '360 adet'
+  },
+  {
+    id: '14',
+    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
+    code: 'KB-12OZ-014',
+    price: 0.12,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
+    minOrder: '500 adet'
+  },
+  {
+    id: '15',
+    name: 'Bardak Kılıfı 12-16oz Kahverengi',
+    code: 'BK-1216-015',
+    price: 0.05,
+    category: 'lid',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
+    minOrder: '1000 adet'
+  },
+  {
+    id: '16',
+    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
+    code: 'KB-16OZ-016',
+    price: 0.15,
+    category: 'cup',
+    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
+    minOrder: '500 adet'
   },
 ]
 
 export default function HomePage() {
   const [gridCols, setGridCols] = useState(4)
+  const [activeCategory, setActiveCategory] = useState('cups')
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const gridClass = {
-    2: 'grid-cols-2',
-    4: 'grid-cols-2 md:grid-cols-4',
-    6: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-6',
-    8: 'grid-cols-2 md:grid-cols-4 lg:grid-cols-8',
-  }[gridCols]
+  const getGridClass = () => {
+    if (gridCols === 1) return 'grid-cols-1'
+    if (gridCols === 2) return 'grid-cols-2'
+    if (gridCols === 4) return 'grid-cols-2 md:grid-cols-4'
+    if (gridCols === 6) return 'grid-cols-2 md:grid-cols-3 lg:grid-cols-6'
+    if (gridCols === 8) return 'grid-cols-2 md:grid-cols-4 lg:grid-cols-8'
+    return 'grid-cols-2 md:grid-cols-4'
+  }
+
+  const cupProducts = products.filter(p => p.category === 'cup')
+  const lidProducts = products.filter(p => p.category === 'lid')
+  
+  let displayProducts = activeCategory === 'cups' ? cupProducts : lidProducts
+
+  if (searchQuery.trim()) {
+    displayProducts = displayProducts.filter(p => 
+      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      p.code.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-50 border-b">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-8">
-              <h1 className="text-2xl font-bold text-blue-600">E-KATALOG</h1>
+    <div className="min-h-screen bg-white">
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-center mb-4">
+            <Image 
+              src="https://packagingwise.co.uk/cdn/shop/files/Logo.png?v=1754919663&width=400"
+              alt="Packaging Wise Logo"
+              width={200}
+              height={60}
+              className="object-contain"
+            />
+          </div>
+
+          <div className="flex justify-center mb-4">
+            <div className="flex items-center gap-2 w-full max-w-md">
               <input
                 type="search"
                 placeholder="Ürün ara..."
-                className="hidden md:block w-96 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
               />
+              <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
             </div>
-            
+          </div>
+
+          <div className="flex items-center justify-between pt-4">
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600 hidden md:block">Görünüm:</span>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setGridCols(2)}
-                  className={`px-3 py-2 rounded-lg font-semibold transition ${
-                    gridCols === 2
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  2
-                </button>
-                <button
-                  onClick={() => setGridCols(4)}
-                  className={`px-3 py-2 rounded-lg font-semibold transition ${
-                    gridCols === 4
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  4
-                </button>
-                <button
-                  onClick={() => setGridCols(6)}
-                  className={`px-3 py-2 rounded-lg font-semibold transition ${
-                    gridCols === 6
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  6
-                </button>
-                <button
-                  onClick={() => setGridCols(8)}
-                  className={`px-3 py-2 rounded-lg font-semibold transition ${
-                    gridCols === 8
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  8
-                </button>
+              <button
+                onClick={() => setActiveCategory('cups')}
+                className={`px-6 py-2 rounded-lg font-medium transition ${
+                  activeCategory === 'cups'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Bardaklar
+              </button>
+              <button
+                onClick={() => setActiveCategory('lids')}
+                className={`px-6 py-2 rounded-lg font-medium transition ${
+                  activeCategory === 'lids'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Kapaklar
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 hidden md:inline">Görünüm:</span>
+              <div className="flex md:hidden items-center gap-2">
+                {[1, 2].map(cols => (
+                  <button
+                    key={cols}
+                    onClick={() => setGridCols(cols)}
+                    className={`w-8 h-8 rounded font-semibold text-sm transition ${
+                      gridCols === cols
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {cols}
+                  </button>
+                ))}
+              </div>
+              <div className="hidden md:flex items-center gap-2">
+                {[2, 4, 6, 8].map(cols => (
+                  <button
+                    key={cols}
+                    onClick={() => setGridCols(cols)}
+                    className={`w-8 h-8 rounded font-semibold text-sm transition ${
+                      gridCols === cols
+                        ? 'bg-green-600 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {cols}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Products Grid */}
       <main className="container mx-auto px-4 py-8">
-        <div className={`grid ${gridClass} gap-4`}>
-          {products.map((product) => (
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">
+            {activeCategory === 'cups' ? 'Bardaklar' : 'Kapaklar ve Aksesuarlar'}
+          </h2>
+          <p className="text-gray-600">{displayProducts.length} ürün</p>
+        </div>
+
+        <div className={`grid ${getGridClass()} gap-6`}>
+          {displayProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer overflow-hidden"
+              className="bg-white rounded-xl border-2 border-gray-200 hover:border-green-500 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group"
             >
-              <div className="relative aspect-square">
+              <div className="relative aspect-square overflow-hidden bg-gray-50">
                 <Image
                   src={product.image}
                   alt={product.name}
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
-              <div className="p-3">
-                <p className="text-xs text-gray-500 mb-1">{product.code}</p>
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+              <div className={`p-5 ${gridCols === 2 ? 'space-y-4' : 'space-y-2'}`}>
+                <p className={`text-gray-400 font-mono ${gridCols === 2 ? 'text-sm' : 'text-xs'}`}>
+                  {product.code}
+                </p>
+                <h3 className={`font-bold text-gray-900 leading-snug ${gridCols === 2 ? 'text-xl mb-3' : 'text-sm line-clamp-2 min-h-[40px] mb-2'}`}>
                   {product.name}
                 </h3>
-                <p className="text-lg font-bold text-blue-600">
-                  {product.price.toLocaleString('tr-TR', {
-                    style: 'currency',
-                    currency: 'TRY',
-                  })}
-                </p>
+                <div className="flex flex-col gap-2">
+                  <p className={`font-bold text-green-600 ${gridCols === 2 ? 'text-3xl' : 'text-2xl'}`}>
+                    ₺{product.price.toFixed(2)}
+                  </p>
+                  <p className={`text-gray-600 bg-gray-100 px-3 py-1.5 rounded-full inline-block w-fit ${gridCols === 2 ? 'text-sm' : 'text-xs'}`}>
+                    Min. {product.minOrder}
+                  </p>
+                </div>
               </div>
             </div>
           ))}

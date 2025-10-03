@@ -8,6 +8,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'packagingwise.co.uk',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 }
