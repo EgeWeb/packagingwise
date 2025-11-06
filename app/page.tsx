@@ -1,15 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { Product } from '@/types/inventory'
+import { initializeProductsWithInventory } from '@/lib/inventory'
 
-const products = [
+const baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' | 'lastRestocked' | 'stockStatus'>[] = [
   {
     id: '1',
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
     code: 'KB-16OZ-001',
     price: 0.15,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
     minOrder: '500 adet'
   },
@@ -18,7 +21,7 @@ const products = [
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
     code: 'KB-12OZ-002',
     price: 0.12,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
     minOrder: '500 adet'
   },
@@ -27,7 +30,7 @@ const products = [
     name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
     code: 'KB-8OZ-003',
     price: 0.08,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
     minOrder: '1000 adet'
   },
@@ -36,7 +39,7 @@ const products = [
     name: 'Bardak Taşıyıcı - 2li',
     code: 'BT-2-004',
     price: 0.25,
-    category: 'lid',
+    category: 'lid' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
     minOrder: '360 adet'
   },
@@ -45,7 +48,7 @@ const products = [
     name: 'Bardak Kılıfı 12-16oz Kahverengi',
     code: 'BK-1216-005',
     price: 0.05,
-    category: 'lid',
+    category: 'lid' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
     minOrder: '1000 adet'
   },
@@ -54,7 +57,7 @@ const products = [
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
     code: 'KB-16OZ-006',
     price: 0.15,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
     minOrder: '500 adet'
   },
@@ -63,7 +66,7 @@ const products = [
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
     code: 'KB-12OZ-007',
     price: 0.12,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
     minOrder: '500 adet'
   },
@@ -72,7 +75,7 @@ const products = [
     name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
     code: 'KB-8OZ-008',
     price: 0.08,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
     minOrder: '1000 adet'
   },
@@ -81,7 +84,7 @@ const products = [
     name: 'Bardak Taşıyıcı - 2li',
     code: 'BT-2-009',
     price: 0.25,
-    category: 'lid',
+    category: 'lid' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
     minOrder: '360 adet'
   },
@@ -90,7 +93,7 @@ const products = [
     name: 'Bardak Kılıfı 12-16oz Kahverengi',
     code: 'BK-1216-010',
     price: 0.05,
-    category: 'lid',
+    category: 'lid' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
     minOrder: '1000 adet'
   },
@@ -99,7 +102,7 @@ const products = [
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
     code: 'KB-16OZ-011',
     price: 0.15,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
     minOrder: '500 adet'
   },
@@ -108,7 +111,7 @@ const products = [
     name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
     code: 'KB-8OZ-012',
     price: 0.08,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
     minOrder: '1000 adet'
   },
@@ -117,7 +120,7 @@ const products = [
     name: 'Bardak Taşıyıcı - 2li',
     code: 'BT-2-013',
     price: 0.25,
-    category: 'lid',
+    category: 'lid' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
     minOrder: '360 adet'
   },
@@ -126,7 +129,7 @@ const products = [
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
     code: 'KB-12OZ-014',
     price: 0.12,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
     minOrder: '500 adet'
   },
@@ -135,7 +138,7 @@ const products = [
     name: 'Bardak Kılıfı 12-16oz Kahverengi',
     code: 'BK-1216-015',
     price: 0.05,
-    category: 'lid',
+    category: 'lid' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
     minOrder: '1000 adet'
   },
@@ -144,16 +147,42 @@ const products = [
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
     code: 'KB-16OZ-016',
     price: 0.15,
-    category: 'cup',
+    category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
     minOrder: '500 adet'
   },
 ]
 
 export default function HomePage() {
+  const [products, setProducts] = useState<Product[]>([])
   const [gridCols, setGridCols] = useState(4)
   const [activeCategory, setActiveCategory] = useState('cups')
+  const [stockFilter, setStockFilter] = useState<'all' | 'in_stock' | 'low_stock' | 'out_of_stock'>('all')
   const [searchQuery, setSearchQuery] = useState('')
+  const [initialized, setInitialized] = useState(false)
+
+  const initializeInventory = useCallback(async () => {
+    if (initialized) return
+
+    const productsWithInventory = initializeProductsWithInventory(baseProducts)
+
+    // Initialize the inventory in the backend
+    await fetch('/api/inventory', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'initialize',
+        products: productsWithInventory
+      })
+    })
+
+    setProducts(productsWithInventory)
+    setInitialized(true)
+  }, [initialized])
+
+  useEffect(() => {
+    initializeInventory()
+  }, [initializeInventory])
 
   const getGridClass = () => {
     if (gridCols === 1) return 'grid-cols-1'
@@ -164,13 +193,37 @@ export default function HomePage() {
     return 'grid-cols-2 md:grid-cols-4'
   }
 
+  const getStockStatusColor = (status: string) => {
+    switch (status) {
+      case 'in_stock': return 'bg-green-100 text-green-800'
+      case 'low_stock': return 'bg-yellow-100 text-yellow-800'
+      case 'out_of_stock': return 'bg-red-100 text-red-800'
+      default: return 'bg-gray-100 text-gray-800'
+    }
+  }
+
+  const getStockStatusText = (status: string) => {
+    switch (status) {
+      case 'in_stock': return 'Stokta'
+      case 'low_stock': return 'Az Kaldı'
+      case 'out_of_stock': return 'Tükendi'
+      default: return 'Bilinmiyor'
+    }
+  }
+
   const cupProducts = products.filter(p => p.category === 'cup')
   const lidProducts = products.filter(p => p.category === 'lid')
-  
+
   let displayProducts = activeCategory === 'cups' ? cupProducts : lidProducts
 
+  // Apply stock filter
+  if (stockFilter !== 'all') {
+    displayProducts = displayProducts.filter(p => p.stockStatus === stockFilter)
+  }
+
+  // Apply search filter
   if (searchQuery.trim()) {
-    displayProducts = displayProducts.filter(p => 
+    displayProducts = displayProducts.filter(p =>
       p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       p.code.toLowerCase().includes(searchQuery.toLowerCase())
     )
@@ -180,14 +233,24 @@ export default function HomePage() {
     <div className="min-h-screen bg-white">
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-center mb-4">
-            <Image 
+          <div className="flex justify-between items-center mb-4">
+            <Image
               src="https://packagingwise.co.uk/cdn/shop/files/Logo.png?v=1754919663&width=400"
               alt="Packaging Wise Logo"
               width={200}
               height={60}
               className="object-contain"
             />
+            <Link
+              href="/admin/inventory"
+              className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 font-medium text-sm flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Admin Panel
+            </Link>
           </div>
 
           <div className="flex justify-center mb-4">
@@ -207,8 +270,8 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-4">
-            <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between pt-4 flex-wrap gap-4">
+            <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setActiveCategory('cups')}
                 className={`px-6 py-2 rounded-lg font-medium transition ${
@@ -228,6 +291,37 @@ export default function HomePage() {
                 }`}
               >
                 Kapaklar
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                onClick={() => setStockFilter('all')}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition ${
+                  stockFilter === 'all'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Tümü
+              </button>
+              <button
+                onClick={() => setStockFilter('in_stock')}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition ${
+                  stockFilter === 'in_stock'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Stokta
+              </button>
+              <button
+                onClick={() => setStockFilter('low_stock')}
+                className={`px-4 py-2 rounded-lg font-medium text-sm transition ${
+                  stockFilter === 'low_stock'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                Az Kaldı
               </button>
             </div>
 
@@ -289,35 +383,46 @@ export default function HomePage() {
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-500"
                 />
+                {/* Stock Badge */}
+                <div className="absolute top-3 right-3">
+                  <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-lg ${getStockStatusColor(product.stockStatus)}`}>
+                    {getStockStatusText(product.stockStatus)}
+                  </span>
+                </div>
               </div>
               <div className="p-5 space-y-2">
                 <p className={`text-gray-400 font-mono mb-1 ${gridCols === 2 ? 'text-xs' : 'text-xs'}`}>
                   {product.code}
                 </p>
                 <h3 className={`font-bold text-gray-900 leading-snug mb-2 ${
-                  gridCols === 1 ? 'text-lg' : 
-                  gridCols === 2 ? 'text-sm md:text-xl' : 
-                  gridCols === 4 ? 'text-base' : 
+                  gridCols === 1 ? 'text-lg' :
+                  gridCols === 2 ? 'text-sm md:text-xl' :
+                  gridCols === 4 ? 'text-base' :
                   'text-sm line-clamp-2 min-h-[40px]'
                 }`}>
                   {product.name}
                 </h3>
                 <div className="space-y-1">
                   <p className={`font-bold text-green-600 ${
-                    gridCols === 1 ? 'text-3xl' : 
-                    gridCols === 2 ? 'text-lg md:text-4xl' : 
-                    gridCols === 4 ? 'text-xl' : 
+                    gridCols === 1 ? 'text-3xl' :
+                    gridCols === 2 ? 'text-lg md:text-4xl' :
+                    gridCols === 4 ? 'text-xl' :
                     'text-base'
                   }`}>
                     ₺{product.price.toFixed(2)}
                   </p>
-                  <p className={`text-gray-600 bg-gray-100 rounded-full inline-block ${
-                    gridCols === 2 ? 'text-[10px] px-2 py-0.5 md:text-xs md:px-2.5 md:py-1' : 
-                    gridCols >= 6 ? 'text-[10px] px-2 py-0.5' : 
-                    'text-xs px-2.5 py-1'
-                  }`}>
-                    Min. {product.minOrder}
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className={`text-gray-600 bg-gray-100 rounded-full inline-block ${
+                      gridCols === 2 ? 'text-[10px] px-2 py-0.5 md:text-xs md:px-2.5 md:py-1' :
+                      gridCols >= 6 ? 'text-[10px] px-2 py-0.5' :
+                      'text-xs px-2.5 py-1'
+                    }`}>
+                      Min. {product.minOrder}
+                    </p>
+                    <p className="text-xs text-gray-500 font-medium">
+                      Stok: {product.stock.toLocaleString()}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
