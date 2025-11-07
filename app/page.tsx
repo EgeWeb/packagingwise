@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Product } from '@/types/inventory'
 import { initializeProductsWithInventory } from '@/lib/inventory'
+import { getValidImageUrl, PLACEHOLDER_IMAGE } from '@/lib/imageUtils'
 
 const STORAGE_KEY = 'packagingwise_products'
 
@@ -326,10 +327,14 @@ export default function HomePage() {
               >
                 <div className="relative aspect-square overflow-hidden bg-gray-50">
                   <Image
-                    src={product.image}
+                    src={getValidImageUrl(product.image)}
                     alt={product.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.src = PLACEHOLDER_IMAGE
+                    }}
                   />
                   {/* Stock Badge */}
                   <div className="absolute top-3 right-3">
