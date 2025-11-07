@@ -28,12 +28,18 @@ export interface Product {
   category: 'cup' | 'lid'
   image: string
   minOrder: string
+  // Product details
+  size?: string // e.g., "8oz", "12oz", "16oz"
+  color?: string // e.g., "Kahverengi", "Beyaz"
+  material?: string // e.g., "Çift Cidarlı", "Tek Cidarlı"
+  description?: string
   // Inventory fields
   stock: number
   lowStockThreshold: number
   supplierId: string
   lastRestocked: string
   stockStatus: 'in_stock' | 'low_stock' | 'out_of_stock'
+  createdAt: string
 }
 
 export interface InventoryStats {

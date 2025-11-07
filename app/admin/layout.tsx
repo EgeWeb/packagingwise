@@ -52,6 +52,21 @@ export default function AdminLayout({
               <ul className="space-y-1">
                 <li>
                   <Link
+                    href="/admin/products"
+                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
+                      isActive('/admin/products')
+                        ? 'bg-green-600 text-white'
+                        : 'text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    Ürün Yönetimi
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/admin/inventory"
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
                       isActive('/admin/inventory')

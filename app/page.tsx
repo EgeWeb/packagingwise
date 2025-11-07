@@ -6,7 +6,9 @@ import Link from 'next/link'
 import { Product } from '@/types/inventory'
 import { initializeProductsWithInventory } from '@/lib/inventory'
 
-const baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' | 'lastRestocked' | 'stockStatus'>[] = [
+const STORAGE_KEY = 'packagingwise_products'
+
+const sampleProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' | 'lastRestocked' | 'stockStatus' | 'createdAt'>[] = [
   {
     id: '1',
     name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
@@ -14,7 +16,10 @@ const baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' |
     price: 0.15,
     category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
-    minOrder: '500 adet'
+    minOrder: '500 adet',
+    size: '16oz',
+    color: 'Kahverengi',
+    material: 'Çift Cidarlı'
   },
   {
     id: '2',
@@ -23,7 +28,10 @@ const baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' |
     price: 0.12,
     category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
-    minOrder: '500 adet'
+    minOrder: '500 adet',
+    size: '12oz',
+    color: 'Kahverengi',
+    material: 'Çift Cidarlı'
   },
   {
     id: '3',
@@ -32,7 +40,10 @@ const baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' |
     price: 0.08,
     category: 'cup' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
-    minOrder: '1000 adet'
+    minOrder: '1000 adet',
+    size: '8oz',
+    color: 'Beyaz',
+    material: 'Tek Cidarlı'
   },
   {
     id: '4',
@@ -50,106 +61,9 @@ const baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' |
     price: 0.05,
     category: 'lid' as const,
     image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
-    minOrder: '1000 adet'
-  },
-  {
-    id: '6',
-    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
-    code: 'KB-16OZ-006',
-    price: 0.15,
-    category: 'cup' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
-    minOrder: '500 adet'
-  },
-  {
-    id: '7',
-    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
-    code: 'KB-12OZ-007',
-    price: 0.12,
-    category: 'cup' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
-    minOrder: '500 adet'
-  },
-  {
-    id: '8',
-    name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
-    code: 'KB-8OZ-008',
-    price: 0.08,
-    category: 'cup' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
-    minOrder: '1000 adet'
-  },
-  {
-    id: '9',
-    name: 'Bardak Taşıyıcı - 2li',
-    code: 'BT-2-009',
-    price: 0.25,
-    category: 'lid' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
-    minOrder: '360 adet'
-  },
-  {
-    id: '10',
-    name: 'Bardak Kılıfı 12-16oz Kahverengi',
-    code: 'BK-1216-010',
-    price: 0.05,
-    category: 'lid' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
-    minOrder: '1000 adet'
-  },
-  {
-    id: '11',
-    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
-    code: 'KB-16OZ-011',
-    price: 0.15,
-    category: 'cup' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
-    minOrder: '500 adet'
-  },
-  {
-    id: '12',
-    name: 'Beyaz Tek Cidarlı Kahve Bardağı 8oz',
-    code: 'KB-8OZ-012',
-    price: 0.08,
-    category: 'cup' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-white-single-wall-coffee-cup-8oz-small-takeaway-1x1000-01.jpg?v=1753294614&width=1080',
-    minOrder: '1000 adet'
-  },
-  {
-    id: '13',
-    name: 'Bardak Taşıyıcı - 2li',
-    code: 'BT-2-013',
-    price: 0.25,
-    category: 'lid' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-carrier-2-cups-1x360-01.jpg?v=1751973699&width=1080',
-    minOrder: '360 adet'
-  },
-  {
-    id: '14',
-    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 12oz',
-    code: 'KB-12OZ-014',
-    price: 0.12,
-    category: 'cup' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-12oz-large-insulated-1x500-01.jpg?v=1753297423&width=1080',
-    minOrder: '500 adet'
-  },
-  {
-    id: '15',
-    name: 'Bardak Kılıfı 12-16oz Kahverengi',
-    code: 'BK-1216-015',
-    price: 0.05,
-    category: 'lid' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-cup-sleeve-12-16oz-brown-1x1000-01.jpg?v=1751972221&width=1080',
-    minOrder: '1000 adet'
-  },
-  {
-    id: '16',
-    name: 'Kahverengi Çift Cidarlı Kahve Bardağı 16oz',
-    code: 'KB-16OZ-016',
-    price: 0.15,
-    category: 'cup' as const,
-    image: 'https://packagingwise.co.uk/cdn/shop/files/packaging-wise-brown-double-wall-coffee-cup-16oz-large-insulated-1x500-01.jpg?v=1753296726&width=1080',
-    minOrder: '500 adet'
+    minOrder: '1000 adet',
+    size: '12-16oz',
+    color: 'Kahverengi'
   },
 ]
 
@@ -164,25 +78,45 @@ export default function HomePage() {
   const initializeInventory = useCallback(async () => {
     if (initialized) return
 
-    const productsWithInventory = initializeProductsWithInventory(baseProducts)
+    // Try to load from localStorage first
+    const stored = localStorage.getItem(STORAGE_KEY)
 
-    // Initialize the inventory in the backend
-    await fetch('/api/inventory', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'initialize',
-        products: productsWithInventory
-      })
-    })
+    if (stored) {
+      // Use existing products from localStorage
+      const parsedProducts = JSON.parse(stored)
+      setProducts(parsedProducts)
+    } else {
+      // Initialize with sample products
+      const productsWithInventory = initializeProductsWithInventory(sampleProducts)
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(productsWithInventory))
+      setProducts(productsWithInventory)
+    }
 
-    setProducts(productsWithInventory)
     setInitialized(true)
   }, [initialized])
 
   useEffect(() => {
     initializeInventory()
   }, [initializeInventory])
+
+  // Listen for storage changes (when products are added/edited in admin)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored) {
+        setProducts(JSON.parse(stored))
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    // Also listen for custom event from same tab
+    window.addEventListener('productsUpdated', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('productsUpdated', handleStorageChange)
+    }
+  }, [])
 
   const getGridClass = () => {
     if (gridCols === 1) return 'grid-cols-1'
@@ -242,7 +176,7 @@ export default function HomePage() {
               className="object-contain"
             />
             <Link
-              href="/admin/inventory"
+              href="/admin/products"
               className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 font-medium text-sm flex items-center gap-2"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -370,64 +304,101 @@ export default function HomePage() {
           <p className="text-gray-600">{displayProducts.length} ürün</p>
         </div>
 
-        <div className={`grid ${getGridClass()} gap-6`}>
-          {displayProducts.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white rounded-xl border-2 border-gray-200 hover:border-green-500 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group"
+        {displayProducts.length === 0 ? (
+          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+            <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+            </svg>
+            <p className="text-gray-500 text-lg mb-4">Bu kategoride ürün bulunmuyor</p>
+            <Link
+              href="/admin/products"
+              className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
             >
-              <div className="relative aspect-square overflow-hidden bg-gray-50">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                {/* Stock Badge */}
-                <div className="absolute top-3 right-3">
-                  <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-lg ${getStockStatusColor(product.stockStatus)}`}>
-                    {getStockStatusText(product.stockStatus)}
-                  </span>
+              Ürün Ekle
+            </Link>
+          </div>
+        ) : (
+          <div className={`grid ${getGridClass()} gap-6`}>
+            {displayProducts.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white rounded-xl border-2 border-gray-200 hover:border-green-500 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden group"
+              >
+                <div className="relative aspect-square overflow-hidden bg-gray-50">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                  {/* Stock Badge */}
+                  <div className="absolute top-3 right-3">
+                    <span className={`px-3 py-1 text-xs font-bold rounded-full shadow-lg ${getStockStatusColor(product.stockStatus)}`}>
+                      {getStockStatusText(product.stockStatus)}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="p-5 space-y-2">
-                <p className={`text-gray-400 font-mono mb-1 ${gridCols === 2 ? 'text-xs' : 'text-xs'}`}>
-                  {product.code}
-                </p>
-                <h3 className={`font-bold text-gray-900 leading-snug mb-2 ${
-                  gridCols === 1 ? 'text-lg' :
-                  gridCols === 2 ? 'text-sm md:text-xl' :
-                  gridCols === 4 ? 'text-base' :
-                  'text-sm line-clamp-2 min-h-[40px]'
-                }`}>
-                  {product.name}
-                </h3>
-                <div className="space-y-1">
-                  <p className={`font-bold text-green-600 ${
-                    gridCols === 1 ? 'text-3xl' :
-                    gridCols === 2 ? 'text-lg md:text-4xl' :
-                    gridCols === 4 ? 'text-xl' :
-                    'text-base'
-                  }`}>
-                    ₺{product.price.toFixed(2)}
+                <div className="p-5 space-y-2">
+                  <p className={`text-gray-400 font-mono mb-1 ${gridCols === 2 ? 'text-xs' : 'text-xs'}`}>
+                    {product.code}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <p className={`text-gray-600 bg-gray-100 rounded-full inline-block ${
-                      gridCols === 2 ? 'text-[10px] px-2 py-0.5 md:text-xs md:px-2.5 md:py-1' :
-                      gridCols >= 6 ? 'text-[10px] px-2 py-0.5' :
-                      'text-xs px-2.5 py-1'
+                  <h3 className={`font-bold text-gray-900 leading-snug mb-2 ${
+                    gridCols === 1 ? 'text-lg' :
+                    gridCols === 2 ? 'text-sm md:text-xl' :
+                    gridCols === 4 ? 'text-base' :
+                    'text-sm line-clamp-2 min-h-[40px]'
+                  }`}>
+                    {product.name}
+                  </h3>
+
+                  {/* Product attributes */}
+                  {(product.size || product.color || product.material) && (
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {product.size && (
+                        <span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs rounded">
+                          {product.size}
+                        </span>
+                      )}
+                      {product.color && (
+                        <span className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs rounded">
+                          {product.color}
+                        </span>
+                      )}
+                      {product.material && (
+                        <span className="px-2 py-0.5 bg-orange-50 text-orange-700 text-xs rounded">
+                          {product.material}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="space-y-1">
+                    <p className={`font-bold text-green-600 ${
+                      gridCols === 1 ? 'text-3xl' :
+                      gridCols === 2 ? 'text-lg md:text-4xl' :
+                      gridCols === 4 ? 'text-xl' :
+                      'text-base'
                     }`}>
-                      Min. {product.minOrder}
+                      ₺{product.price.toFixed(2)}
                     </p>
-                    <p className="text-xs text-gray-500 font-medium">
-                      Stok: {product.stock.toLocaleString()}
-                    </p>
+                    <div className="flex items-center justify-between">
+                      <p className={`text-gray-600 bg-gray-100 rounded-full inline-block ${
+                        gridCols === 2 ? 'text-[10px] px-2 py-0.5 md:text-xs md:px-2.5 md:py-1' :
+                        gridCols >= 6 ? 'text-[10px] px-2 py-0.5' :
+                        'text-xs px-2.5 py-1'
+                      }`}>
+                        Min. {product.minOrder}
+                      </p>
+                      <p className="text-xs text-gray-500 font-medium">
+                        Stok: {product.stock.toLocaleString()}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   )

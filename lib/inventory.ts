@@ -38,13 +38,14 @@ export const initialSuppliers: Supplier[] = [
 ]
 
 // Initialize products with inventory data
-export function initializeProductsWithInventory(baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' | 'lastRestocked' | 'stockStatus'>[]): Product[] {
+export function initializeProductsWithInventory(baseProducts: Omit<Product, 'stock' | 'lowStockThreshold' | 'supplierId' | 'lastRestocked' | 'stockStatus' | 'createdAt'>[]): Product[] {
   return baseProducts.map((product, index) => ({
     ...product,
     stock: Math.floor(Math.random() * 10000) + 1000,
     lowStockThreshold: product.category === 'cup' ? 2000 : 1000,
     supplierId: initialSuppliers[index % initialSuppliers.length].id,
     lastRestocked: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+    createdAt: new Date(Date.now() - Math.random() * 90 * 24 * 60 * 60 * 1000).toISOString(),
     stockStatus: getStockStatus(
       Math.floor(Math.random() * 10000) + 1000,
       product.category === 'cup' ? 2000 : 1000
